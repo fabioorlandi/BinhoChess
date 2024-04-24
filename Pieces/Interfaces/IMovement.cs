@@ -2,5 +2,6 @@ namespace BinhoChess.Pieces.Interfaces;
 
 interface IMovement
 {
-    void Move();
+    bool CanMove(ISquare destiny);
+    void Move(ISquare destiny);
 }
