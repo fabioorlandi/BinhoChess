@@ -6,9 +6,9 @@ namespace BinhoChess;
 
 public class Chessboard
 {
-    private IEnumerable<ISquare> _squares;
-    private IEnumerable<IPiece> _whitePieces;
-    private IEnumerable<IPiece> _blackPieces;
+    private readonly IEnumerable<ISquare> _squares;
+    private readonly IEnumerable<IPiece> _whitePieces;
+    private readonly IEnumerable<IPiece> _blackPieces;
 
     private static Chessboard? _board;
     public static Chessboard GetChessboard()
@@ -21,46 +21,47 @@ public class Chessboard
 
     public static void Reset() => _board = null;
 
+    public static void Start() { }
+
     private Chessboard()
     {
-        _whitePieces = this.BuildPieces();
-        _blackPieces = this.BuildPieces();
         _squares = this.BuildSquares();
 
-        this.AssignWhitePieces();
-        this.AssignBlackPieces();
+        _whitePieces = this.BuildWhitePieces();
+        _blackPieces = this.BuildBlackPieces();
     }
 
     private IEnumerable<ISquare> BuildSquares()
     {
         for (int i = 0; i < 8; i++)
             for (int j = 0; j < 8; j++)
-                yield return new Square(i, j);
+                yield return new Square(rank: i, file: j, assignDefaultPiece: true);
     }
 
-    private IEnumerable<IPiece> BuildPieces()
+    private IEnumerable<IPiece> BuildWhitePieces()
     {
-        for (int i = 0; i < 8; i++)
-            yield return new Pawn();
-
         for (int i = 0; i < 2; i++)
-        {
-            yield return new Knight();
-            yield return new Bishop();
-            yield return new Rook();
-        }
+            for (int j = 0; j < 8; j++)
+            {
+                var piece = this.GetPiece(i, j);
 
-        yield return new Queen();
-        yield return new King();
+                if (piece is not null)
+                    yield return piece;
+            }
     }
 
-    private void AssignWhitePieces()
+    private IEnumerable<IPiece> BuildBlackPieces()
     {
-        throw new NotImplementedException();
+        for (int i = 6; i < 8; i++)
+            for (int j = 0; j < 8; j++)
+            {
+                var piece = this.GetPiece(i, j);
+
+                if (piece is not null)
+                    yield return piece;
+            }
     }
 
-    private void AssignBlackPieces()
-    {
-        throw new NotImplementedException();
-    }
+    private IPiece? GetPiece(int rank, int file) =>
+        _squares.FirstOrDefault(S => S.Rank == rank && S.File == file)?.Piece;
 }

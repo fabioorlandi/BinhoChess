@@ -2,7 +2,7 @@ using BinhoChess.Pieces.Interfaces;
 
 namespace BinhoChess.Pieces;
 
-public class Bishop : IPiece
+class Bishop : IPiece
 {
 
 }

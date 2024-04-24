@@ -2,7 +2,7 @@
 
 namespace BinhoChess.Pieces;
 
-public class Queen : IPiece
+class Queen : IPiece
 {
 
 }
